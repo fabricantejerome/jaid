@@ -1,0 +1,177 @@
+<div class="">
+  <div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-md="75" fxFlex.md="75">
+      <mat-card class="p-24">
+        <div fxLayout="row wrap">
+          <div fxFlex="70">
+            <mat-card-title>Welcome Back! Watson</mat-card-title>
+            <p class="text-small">
+              You have completed <span class="font-weight-bold">70%</span> of
+              your goal this week! Start a new goal and improve your result.
+            </p>
+          </div>
+          <div fxFlex="30">
+            <apx-chart
+              [series]="welcomeProgressChart.series"
+              [chart]="welcomeProgressChart.chartOptions.chart"
+              [grid]="welcomeProgressChart.chartOptions.grid"
+              [plotOptions]="welcomeProgressChart.chartOptions.plotOptions"
+              [colors]="welcomeProgressChart.chartOptions.colors"
+              [stroke]="welcomeProgressChart.chartOptions.stroke"
+              [labels]="welcomeProgressChart.chartOptions.labels"
+              [responsive]="welcomeProgressChart.chartOptions.responsive"
+            ></apx-chart>
+          </div>
+        </div>
+      </mat-card>
+      <div fxLayout="row wrap">
+        <div fxFlex="50">
+          <mat-card>
+            <h5>Results</h5>
+            <div
+              class="d-flex justify-content-between align-items-baseline"
+              *ngFor="let r of results"
+            >
+              <div class="mr-2">
+                <i class="material-icons text-10 text-{{r.color}} mr-16">lens</i>
+              </div>
+              <div class="lm-title flex-grow-1">
+                <p class="font-weight-semi mb-0">{{r.name}}</p>
+                <p class="text-small text-muted">{{r.date}}</p>
+              </div>
+              <div class="ul-progressbar flex-grow-1">
+                <div class="progress-percentage d-flex">
+                  <span class="flex-grow-1"></span>
+                  <span class="text-muted">{{r.completed}}%</span>
+                </div>
+                <mat-progress-bar mode="determinate" [value]="r.completed" [color]="r.color"></mat-progress-bar>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+        <div fxFlex="50">
+          <mat-card>
+            <h5>Study time last week</h5>
+            <apx-chart
+              [series]="studyChart.series"
+              [chart]="studyChart.chartOptions.chart"
+              [legend]="studyChart.chartOptions.legend"
+              [grid]="studyChart.chartOptions.grid"
+              [plotOptions]="studyChart.chartOptions.plotOptions"
+              [colors]="studyChart.chartOptions.colors"
+              [dataLabels]="studyChart.chartOptions.dataLabels"
+              [xaxis]="studyChart.chartOptions.xaxis"
+              [yaxis]="studyChart.chartOptions.yaxis"
+            ></apx-chart>
+          </mat-card>
+        </div>
+        <div fxFlex="50">
+          <mat-card class="mat-bg-primary p-24 d-flex align-items-center">
+            <div class="w-40 h-40 mr-16 rounded-circle d-flex align-items-center justify-content-center">
+              <span class="text-white font-weight-bold text-18">R</span>
+            </div>
+            <div class="flex-grow-1">
+              <h4 class="text-white m-0">React tutorial</h4>
+              <p class="text-muted-white m-0">You watched today</p>
+            </div>
+            <button mat-icon-button>
+              <mat-icon class="text-muted-white">play_arrow</mat-icon>
+            </button>
+          </mat-card>
+        </div>
+        <div fxFlex="50">
+          <mat-card class="mat-bg-warn p-24 d-flex align-items-center">
+            <div class="w-40 h-40 mr-16 rounded-circle d-flex align-items-center justify-content-center">
+              <span class="text-white font-weight-bold text-18">P</span>
+            </div>
+            <div class="flex-grow-1">
+              <h4 class="text-white m-0">Python for busy developers</h4>
+              <p class="text-muted-white m-0">You watched yesterday</p>
+            </div>
+            <button mat-icon-button>
+              <mat-icon class="text-muted-white">play_arrow</mat-icon>
+            </button>
+          </mat-card>
+        </div>
+
+        <div fxFlex="100">
+          <div class="m-12">
+            <ngx-datatable class="material bg-white"
+            [columnMode]="'force'"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [rowHeight]="50"
+            [limit]="8"
+            [rows]="courses"
+            [scrollbarH]="true">
+              <ngx-datatable-column name="Icon" prop="icon" width="60">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <img class="h-20" [src]="value">
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="Started" prop="date" width="60">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <span class="text-muted">{{value | date}}</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="Course" prop="name">
+              </ngx-datatable-column>
+              <ngx-datatable-column name="Progress" prop="progress">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <mat-progress-bar [value]="value" color="primary"></mat-progress-bar>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column>
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <span class="flex-grow-1"></span>
+                  <button mat-icon-button>
+                    <mat-icon color="accent">play_circle_filled</mat-icon>
+                  </button>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div fxFlex="100" fxFlex.gt-md="25" fxFlex.md="25">
+      <mat-card>
+        <div class="px-8 py-16 mb-24 w-full d-flex flex-column align-items-center text-center blue-100 rounded">
+          <img class="mb-16" src="../../../../assets/images/illustrations/upgrade.svg" alt="">
+          <p class="font-weight-normal">Upgrade to <b>PRO</b> for <br> more resources</p>
+          <button mat-raised-button color="primary">UPGRADE NOW</button>
+        </div>
+
+        <div class="mat-heading-label">REMINDER</div>
+
+        <div class="d-flex mb-16" *ngFor="let r of reminders">
+          <div class="w-40 h-40 mr-16 rounded-circle mat-bg-chip d-flex align-items-center justify-content-center">
+            <mat-icon>{{r.icon}}</mat-icon>
+          </div>
+          <div class="d-flex flex-column justify-content-center flex-grow-1">
+            <h6 class="mb-4">{{r.title}}</h6>
+            <small class="text-muted">{{r.date}}</small>
+          </div>
+          <button mat-icon-button>
+            <mat-icon class="text-muted">more_vert</mat-icon>
+          </button>
+        </div>
+        <div class="my-24"></div>
+        <div class="mat-heading-label">Upcoming Challenges</div>
+        <div class="d-flex mb-16" *ngFor="let r of reminders">
+          <div class="w-40 h-40 mr-16 rounded-circle mat-bg-chip d-flex align-items-center justify-content-center">
+            <mat-icon>{{r.icon}}</mat-icon>
+          </div>
+          <div class="d-flex flex-column justify-content-center flex-grow-1">
+            <h6 class="mb-4">{{r.title}}</h6>
+            <small class="text-muted">{{r.date}}</small>
+          </div>
+          <button mat-icon-button>
+            <mat-icon class="text-muted">more_vert</mat-icon>
+          </button>
+        </div>
+
+      </mat-card>
+    </div>
+  </div>
+</div>
