@@ -31,8 +31,8 @@ export const rootRouterConfig: Routes = [
                 data: { title: 'Dashboard', breadcrumb: ''}
             },
             {
-                path: 'user',
-                loadChildren: () => import('./views/user/user.module').then(m => m.UserModule),
+                path: 'users',
+                loadChildren: () => import('./views/users/users.module').then(m => m.UsersModule),
                 // data: { title: 'User', breadcrumb: 'user'}
             },
             {

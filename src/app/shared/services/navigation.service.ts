@@ -42,7 +42,7 @@ export class NavigationService {
             name: 'Users',
             type: 'link',
             icon: 'person',
-            state: 'user/list'
+            state: 'users/list'
         }, {
             name: 'Blank',
             type: 'link',
