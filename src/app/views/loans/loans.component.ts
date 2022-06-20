@@ -1,26 +1,27 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UsersService } from './users.service';
+import { LoansService } from './loans.service';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfirmService } from '../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../shared/services/app-loader/app-loader.service';
-import { UserFormComponent } from './user-form/user-form.component';
+import { LoanFormComponent } from './loan-form/loan-form.component';
 import { Subscription } from 'rxjs';
 import { egretAnimations } from "../../shared/animations/egret-animations";
 
 @Component({
-    selector: 'app-users',
-    templateUrl: './users.component.html',
+    selector: 'app-loans',
+    templateUrl: './loans.component.html',
+    styleUrls: ['./loans.component.scss'],
     animations: egretAnimations
 })
-export class UsersComponent implements OnInit, OnDestroy {
+export class LoansComponent implements OnInit, OnDestroy {
     public items: any[];
     public filteredUser: any[];
     public getItemSub: Subscription;
     constructor(
         private dialog: MatDialog,
         private snack: MatSnackBar,
-        private usersService: UsersService,
+        private loansService: LoansService,
         private confirmService: AppConfirmService,
         private loader: AppLoaderService
     ) { }
@@ -36,7 +37,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     getItems() {
-        this.getItemSub = this.usersService.getItems()
+        this.getItemSub = this.loansService.getItems()
         .subscribe(data => {
             this.items = data;
             this.filteredUser = data.slice();
@@ -44,8 +45,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
 
     openPopUp(data: any = {}, isNew?) {
-        let title = isNew ? 'Add new member' : 'Update member';
-        let dialogRef: MatDialogRef<any> = this.dialog.open(UserFormComponent, {
+        let title = isNew ? 'Add New Loan' : 'Update Loan';
+        let dialogRef: MatDialogRef<any> = this.dialog.open(LoanFormComponent, {
             width: '720px',
             disableClose: true,
             data: { title: title, payload: data }
@@ -61,7 +62,7 @@ export class UsersComponent implements OnInit, OnDestroy {
             this.loader.open();
 
             if (isNew) {
-                this.usersService.addItem(res)
+                this.loansService.addItem(res)
                     .subscribe(data => {
                         this.items = data;
                         this.loader.close();
@@ -69,7 +70,7 @@ export class UsersComponent implements OnInit, OnDestroy {
                         this.filteredUser = data.slice();
                     })
             } else {
-                this.usersService.updateItem(data._id, res)
+                this.loansService.updateItem(data._id, res)
                     .subscribe(data => {
                         this.items = data;
                         this.loader.close();
@@ -85,7 +86,7 @@ export class UsersComponent implements OnInit, OnDestroy {
             .subscribe(res => {
                 if (res) {
                 this.loader.open();
-                this.usersService.removeItem(row)
+                this.loansService.removeItem(row)
                     .subscribe(data => {
                         this.items = data;
                         this.loader.close();

@@ -6,7 +6,7 @@ import { AuthGuard } from './shared/guards/auth.guard';
 export const rootRouterConfig: Routes = [
     {
         path: '',
-        redirectTo: 'others/blank',
+        redirectTo: 'dashboard/default',
         pathMatch: 'full'
     },
     {
@@ -29,6 +29,11 @@ export const rootRouterConfig: Routes = [
                 path: 'dashboard',
                 loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule),
                 data: { title: 'Dashboard', breadcrumb: ''}
+            },
+            {
+                path: 'loans',
+                loadChildren: () => import('./views/loans/loans.module').then(m => m.LoansModule),
+                // data: { title: 'User', breadcrumb: 'user'}
             },
             {
                 path: 'users',

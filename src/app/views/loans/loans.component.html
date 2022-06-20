@@ -1,5 +1,5 @@
 <div class="m-333">
-    <button mat-raised-button class="mb-8" color="primary" (click)="openPopUp({}, true)">{{"ADD" | translate }} {{"User" | translate }}</button>
+    <button mat-raised-button class="mb-8" color="primary" (click)="openPopUp({}, true)">{{"ADD" | translate }} {{"Loan" | translate }}</button>
 </div>
 <mat-form-field class="margin-333" style="width: 100%">
     <input 
@@ -26,21 +26,33 @@
                 </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Age" [flexGrow]="1">
-                <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{ row?.age }}
-                </ng-template>
-            </ngx-datatable-column>
-
             <ngx-datatable-column name="Balance" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     {{ row?.balance | currency }}
                 </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Company" [flexGrow]="1">
+            <ngx-datatable-column name="Interest Rate" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{ row?.company }}
+                    {{ row?.interestRate * 100 + '%' }}
+                </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Total Amount" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.totalLoan | currency }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Total Amt w/ Interest" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ (row?.totalLoan + (row?.totalLoan * row?.interestRate)) | currency  }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Duration" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.duration }}
                 </ng-template>
             </ngx-datatable-column>
 

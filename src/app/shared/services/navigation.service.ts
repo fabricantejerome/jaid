@@ -39,6 +39,11 @@ export class NavigationService {
             //   { name: 'Default', state: 'default' },
             // ]
         }, {
+            name: 'Loans',
+            type: 'link',
+            icon: 'money',
+            state: 'loans/list'
+        },{
             name: 'Users',
             type: 'link',
             icon: 'person',

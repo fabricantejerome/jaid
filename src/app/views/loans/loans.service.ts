@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { UserDB } from '../../shared/inmemory-db/users';
+// import { UserDB } from '../../shared/inmemory-db/users';
+import { LoanDB } from '../../shared/inmemory-db/loans';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 @Injectable()
-export class UsersService {
+export class LoansService {
     items: any[];
     constructor(
         private http: HttpClient
     ) {
-        let userDB = new UserDB();
-        this.items = userDB.users;
+        let loanDB = new LoanDB();
+        this.items = loanDB.loans;
     }
 
     //******* Implement your APIs ********
