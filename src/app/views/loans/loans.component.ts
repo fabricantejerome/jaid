@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfirmService } from '../../shared/services/app-confirm/app-confirm.service';
 import { AppLoaderService } from '../../shared/services/app-loader/app-loader.service';
 import { LoanFormComponent } from './loan-form/loan-form.component';
+import { LoanDetailsComponent } from './loan-details/loan-details.component';
 import { Subscription } from 'rxjs';
 import { egretAnimations } from "../../shared/animations/egret-animations";
 
@@ -117,5 +118,14 @@ export class LoansComponent implements OnInit, OnDestroy {
         });
 
         this.filteredUser = rows ? rows : this.items;
-      }
+    }
+
+    openLoanDetails(data: any = {}, isNew?) {
+        const title = isNew ? 'Add Payment' : 'Update Payment';
+        const dialogRef: MatDialogRef<any> = this.dialog.open(LoanDetailsComponent, {
+            width: '720px',
+            disableClose: true,
+            data: { title: title, payload: data }
+        })
+    }
 }

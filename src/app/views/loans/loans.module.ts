@@ -15,18 +15,22 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SharedModule } from '../../shared/shared.module';
+import { MatDatepickerModule } from "@angular/material/datepicker";
 
 import { LoansRoutingModule } from './loans-routing.module';
 import { LoansComponent } from './loans.component';
 import { LoansService } from './loans.service';
 import { LoanFormComponent } from './loan-form/loan-form.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { LoanDetailsComponent } from './loan-details/loan-details.component';
+import { LoanDetailsService } from './loan-details/loan-details.service';
 
 
 @NgModule({
     declarations: [
         LoansComponent,
-        LoanFormComponent
+        LoanFormComponent,
+        LoanDetailsComponent
     ],
     imports: [
         CommonModule,
@@ -46,8 +50,12 @@ import { TranslateModule } from '@ngx-translate/core';
         MatSlideToggleModule,
         TranslateModule,
         SharedModule,
+        MatDatepickerModule,
         LoansRoutingModule
     ],
-    providers: [LoansService]
+    providers: [
+        LoansService,
+        LoanDetailsService
+    ]
 })
 export class LoansModule { }

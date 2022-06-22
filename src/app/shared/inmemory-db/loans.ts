@@ -8,7 +8,7 @@ export class LoanDB {
             'balance':   17400,
             'totalLoan':  20000,
             'interestRate': .17,
-            'duration': '1 Year',
+            'duration': '12 Months',
             'name': 'Stefanie Marsh',
             'email': 'stefaniemarsh@acium.com',
             'phone': '+1 (857) 535-2066',
