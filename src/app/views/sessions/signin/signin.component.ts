@@ -9,77 +9,81 @@ import { AppLoaderService } from '../../../shared/services/app-loader/app-loader
 import { JwtAuthService } from '../../../shared/services/auth/jwt-auth.service';
 
 @Component({
-  selector: 'app-signin',
-  templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.css']
+    selector: 'app-signin',
+    templateUrl: './signin.component.html',
+    styleUrls: ['./signin.component.css']
 })
 export class SigninComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild(MatProgressBar) progressBar: MatProgressBar;
-  @ViewChild(MatButton) submitButton: MatButton;
+    @ViewChild(MatProgressBar) progressBar: MatProgressBar;
+    @ViewChild(MatButton) submitButton: MatButton;
 
-  signinForm: FormGroup;
-  errorMsg = '';
-  // return: string;
+    signinForm: FormGroup;
+    errorMsg = '';
+    // return: string;
 
-  private _unsubscribeAll: Subject<any>;
+    private _unsubscribeAll: Subject<any>;
 
-  constructor(
-    private jwtAuth: JwtAuthService,
-    private egretLoader: AppLoaderService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
-    this._unsubscribeAll = new Subject();
-  }
-
-  ngOnInit() {
-    this.signinForm = new FormGroup({
-      username: new FormControl('Watson', Validators.required),
-      password: new FormControl('12345678', Validators.required),
-      rememberMe: new FormControl(true)
-    });
-
-    // this.route.queryParams
-    //   .pipe(takeUntil(this._unsubscribeAll))
-    //   .subscribe(params => this.return = params['return'] || '/');
-  }
-
-  ngAfterViewInit() {
-    this.autoSignIn();
-  }
-
-  ngOnDestroy() {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
-  }
-
-  signin() {
-    const signinData = this.signinForm.value
-
-    this.submitButton.disabled = true;
-    this.progressBar.mode = 'indeterminate';
-    
-    this.jwtAuth.signin(signinData.username, signinData.password)
-    .subscribe(response => {
-      this.router.navigateByUrl(this.jwtAuth.return);
-    }, err => {
-      this.submitButton.disabled = false;
-      this.progressBar.mode = 'determinate';
-      this.errorMsg = err.message;
-      // console.log(err);
-    })
-  }
-
-  autoSignIn() {    
-    if(this.jwtAuth.return === '/') {
-      return
+    constructor(
+        private jwtAuth: JwtAuthService,
+        private egretLoader: AppLoaderService,
+        private router: Router,
+        private route: ActivatedRoute
+    ) {
+        this._unsubscribeAll = new Subject();
     }
-    this.egretLoader.open(`Automatically Signing you in! \n Return url: ${this.jwtAuth.return.substring(0, 20)}...`, {width: '320px'});
-    setTimeout(() => {
-      this.signin();
-      console.log('autoSignIn');
-      this.egretLoader.close()
-    }, 2000);
-  }
 
+    ngOnInit() {
+        this.signinForm = new FormGroup({
+        username: new FormControl('Watson', Validators.required),
+        password: new FormControl('12345678', Validators.required),
+        rememberMe: new FormControl(true)
+        });
+
+        // this.route.queryParams
+        //   .pipe(takeUntil(this._unsubscribeAll))
+        //   .subscribe(params => this.return = params['return'] || '/');
+    }
+
+    ngAfterViewInit() {
+        // this.autoSignIn();
+    }
+
+    ngOnDestroy() {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
+    signin() {
+        const signinData = this.signinForm.value
+
+        this.submitButton.disabled = true;
+        this.progressBar.mode = 'indeterminate';
+        
+        // this.egretLoader.open(`Signing in! \n Return url: ${this.jwtAuth.return.substring(0, 20)}...`, {width: '320px'});
+
+        this.jwtAuth.signin(signinData.username, signinData.password)
+        .subscribe(response => {
+            this.router.navigateByUrl(this.jwtAuth.return);
+            // this.egretLoader.close()
+        }, err => {
+            this.submitButton.disabled = false;
+            this.progressBar.mode = 'determinate';
+            this.errorMsg = err.message;
+            // this.egretLoader.close()
+            // console.log(err);
+        })
+    }
+
+    autoSignIn() {    
+        if(this.jwtAuth.return === '/') {
+            return
+        }
+        this.egretLoader.open(`Automatically Signing you in! \n Return url: ${this.jwtAuth.return.substring(0, 20)}...`, {width: '320px'});
+        
+        setTimeout(() => {
+            this.signin();
+            console.log('autoSignIn');
+            this.egretLoader.close()
+        }, 2000);
+    }
 }

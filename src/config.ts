@@ -1,5 +1,6 @@
 export const config = {
-  apiUrl: 'http://ui-lib-demo-api.herokuapp.com',
+  // apiUrl: 'http://ui-lib-demo-api.herokuapp.com',
+  apiUrl: 'http://localhost:3000',
   authRoles: {
     sa: ['SA'], // Only Super Admin has access
     admin: ['SA', 'Admin'], // Only SA & Admin has access
