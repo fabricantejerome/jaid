@@ -41,11 +41,11 @@ export class JwtAuthService {
         .subscribe(params => this.return = params['return'] || '/');
     }
 
-    public signin(username, password) {
+    public signin(email, password) {
         // FOLLOWING CODE SENDS SIGNIN REQUEST TO SERVER
-
         this.signingIn = true;
-        return this.http.post(`${environment.apiURL}/auth/login`, { username, password })
+
+        return this.http.post(`${environment.apiURL}/auth/login`, { email, password })
         .pipe(
             map((res: any) => {
                 this.setUserAndToken(res.token, res.user, !!res);

@@ -34,9 +34,9 @@ export class SigninComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         this.signinForm = new FormGroup({
-        username: new FormControl('Watson', Validators.required),
-        password: new FormControl('12345678', Validators.required),
-        rememberMe: new FormControl(true)
+            email: new FormControl('jerome.fabricante@opsolutions.biz', Validators.required),
+            password: new FormControl('testpassword123@', Validators.required),
+            rememberMe: new FormControl(true)
         });
 
         // this.route.queryParams
@@ -58,19 +58,16 @@ export class SigninComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.submitButton.disabled = true;
         this.progressBar.mode = 'indeterminate';
-        
-        // this.egretLoader.open(`Signing in! \n Return url: ${this.jwtAuth.return.substring(0, 20)}...`, {width: '320px'});
 
-        this.jwtAuth.signin(signinData.username, signinData.password)
+        this.jwtAuth.signin(signinData.email, signinData.password)
         .subscribe(response => {
             this.router.navigateByUrl(this.jwtAuth.return);
-            // this.egretLoader.close()
         }, err => {
             this.submitButton.disabled = false;
             this.progressBar.mode = 'determinate';
-            this.errorMsg = err.message;
-            // this.egretLoader.close()
-            // console.log(err);
+            // this.errorMsg = err.message;
+            this.errorMsg = err.error.message;
+            console.log(err);
         })
     }
 
