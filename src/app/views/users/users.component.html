@@ -22,6 +22,24 @@
 
             <ngx-datatable-column name="Name" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.displayName }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Email" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.email }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Role" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.role }}
+                </ng-template>
+            </ngx-datatable-column>
+
+            <!-- <ngx-datatable-column name="Name" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
                     {{ row?.name }}
                 </ng-template>
             </ngx-datatable-column>
@@ -48,7 +66,7 @@
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.isActive">{{row.isActive ? 'active' : 'inactive'}}</mat-chip>
                 </ng-template>
-            </ngx-datatable-column>
+            </ngx-datatable-column> -->
 
             <ngx-datatable-column name="Actions" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>

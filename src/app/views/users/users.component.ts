@@ -17,6 +17,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     public items: any[];
     public filteredUser: any[];
     public getItemSub: Subscription;
+    public userSub: Subscription;
     constructor(
         private dialog: MatDialog,
         private snack: MatSnackBar,
@@ -26,12 +27,16 @@ export class UsersComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.getItems()
+        // this.getItems()
+        this.userSub = this.usersService.fetch().subscribe((users) => {
+            this.items = users;
+            this.filteredUser = users;
+        });
     }
 
     ngOnDestroy() {
-        if (this.getItemSub) {
-            this.getItemSub.unsubscribe()
+        if (this.userSub) {
+            this.userSub.unsubscribe()
         }
     }
 
@@ -85,11 +90,14 @@ export class UsersComponent implements OnInit, OnDestroy {
             .subscribe(res => {
                 if (res) {
                 this.loader.open();
-                this.usersService.removeItem(row)
+                this.usersService.remove(row)
                     .subscribe(data => {
-                        this.items = data;
+                        // this.items = data;
                         this.loader.close();
+                        this.filteredUser = this.filteredUser.filter(element => element.id != row.id)
                         this.snack.open('Member deleted!', 'OK', { duration: 4000 })
+                        // this.filteredUser = data.slice();
+
                     })
                 }
             })

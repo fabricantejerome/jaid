@@ -92,6 +92,7 @@ export class LoansComponent implements OnInit, OnDestroy {
                         this.items = data;
                         this.loader.close();
                         this.snack.open('Member deleted!', 'OK', { duration: 4000 })
+                        this.filteredUser = data.slice();
                     })
                 }
             })

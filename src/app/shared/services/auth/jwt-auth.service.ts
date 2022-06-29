@@ -7,17 +7,6 @@ import { User } from "../../models/user.model";
 import { of, BehaviorSubject, throwError } from "rxjs";
 import { environment } from "environments/environment";
 
-// ================= only for demo purpose ===========
-const DEMO_TOKEN =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1YjhkNDc4MDc4NmM3MjE3MjBkYzU1NzMiLCJlbWFpbCI6InJhZmkuYm9ncmFAZ21haWwuY29tIiwicm9sZSI6IlNBIiwiYWN0aXZlIjp0cnVlLCJpYXQiOjE1ODc3MTc2NTgsImV4cCI6MTU4ODMyMjQ1OH0.dXw0ySun5ex98dOzTEk0lkmXJvxg3Qgz4ed";
-
-const DEMO_USER: User = {
-    id: "5b700c45639d2c0c54b354ba",
-    displayName: "Watson Joyce",
-    role: "SA",
-};
-// ================= you will get those data from server =======
-
 @Injectable({
     providedIn: "root",
 })

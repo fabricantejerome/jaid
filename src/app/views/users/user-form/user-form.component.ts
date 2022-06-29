@@ -21,7 +21,7 @@ export class UserFormComponent implements OnInit {
 
     buildItemForm(item) {
         this.itemForm = this.fb.group({
-            name: [item.name || '', Validators.required],
+            displayName: [item.displayName || '', Validators.required],
             age: [item.age || ''],
             email: [item.email || ''],
             company: [item.company || ''],

@@ -45,7 +45,7 @@ export class SigninComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit() {
-        // this.autoSignIn();
+        this.autoSignIn();
     }
 
     ngOnDestroy() {

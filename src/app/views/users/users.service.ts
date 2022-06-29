@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { UserDB } from '../../shared/inmemory-db/users';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { environment } from "environments/environment";
+import { User } from 'app/shared/models/user.model';
 
 @Injectable()
 export class UsersService {
@@ -39,5 +41,13 @@ export class UsersService {
         let i = this.items.indexOf(row);
         this.items.splice(i, 1);
         return of(this.items.slice()).pipe(delay(1000));
+    }
+
+    fetch() {
+        return this.http.get<User[]>(`${environment.apiURL}/users/`);
+    }
+
+    remove(user: User) {
+        return this.http.delete<User>(`${environment.apiURL}/users/${user.id}`);
     }
 }
