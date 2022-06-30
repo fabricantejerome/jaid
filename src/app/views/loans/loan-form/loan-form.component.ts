@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { formatDate } from '@angular/common';
+import { Loan } from '../interfaces/loan';
 
 @Component({
     selector: 'app-loan-form',
@@ -16,25 +18,49 @@ export class LoanFormComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.buildItemForm(this.data.payload)
+        this.buildItemForm(this.data.payload);
     }
 
     buildItemForm(item) {
         this.itemForm = this.fb.group({
+            id: [item.id || ''],
             name: [item.name || '', Validators.required],
-            age: [item.age || ''],
             email: [item.email || ''],
-            phone: [item.phone || ''],
+            mobile: [item.mobile || ''],
             address: [item.address || ''],
-            balance: [item.balance || ''],
-            totalLoan: [item.totalLoan || ''],
+            amount: [item.amount || ''],
             interestRate: [item.interestRate || ''],
+            totalLoan: [item.totalLoan || ''],
             duration: [item.duration || ''],
-            isActive: [item.isActive || false]
+            loanDate: [item.loanDate || ''],
+            isApproved: [item.isApproved || false]
         })
     }
 
+    applyTotalLoan() {
+        const totalLoan = parseFloat(this.itemForm.controls['amount'].value) + 
+            (this.itemForm.controls['amount'].value * this.itemForm.controls['interestRate'].value);
+            
+        this.itemForm.controls['totalLoan'].setValue(totalLoan);
+    }
+
     submit() {
-        this.dialogRef.close(this.itemForm.value)
+        let loan: Loan;
+
+        loan = {
+            id: this.itemForm.get('id').value,
+            name: this.itemForm.get('name').value,
+            address: this.itemForm.get('address').value,
+            amount: parseFloat(this.itemForm.get('amount').value),
+            duration: this.itemForm.get('duration').value,
+            email: this.itemForm.get('email').value,
+            interestRate: parseFloat(this.itemForm.get('interestRate').value),
+            loanDate: formatDate(this.itemForm.get('loanDate').value, "yyyy-MM-dd", "en-US").toString(),
+            mobile: this.itemForm.get('mobile').value,
+            totalLoan: this.itemForm.get('totalLoan').value,
+            isApproved: this.itemForm.get('isApproved').value
+        }
+
+        this.dialogRef.close(loan);
     }
 }

@@ -31,26 +31,27 @@ export class LoanDetailsComponent implements OnInit, AfterContentChecked, OnDest
 
     ngOnInit(): void {
         this.getItems();
-        this.buildItemForm(this.data.payload)
+        this.buildItemForm()
     }
 
     ngAfterContentChecked(): void {
         window.dispatchEvent(new Event('resize'));
     }
 
-    buildItemForm(item) {
+    buildItemForm() {
         this.itemForm = this.fb.group({
-            date: [item.date || '', Validators.required],
-            amount: [item.amount || '', Validators.required]
+            paymentDate: ['', Validators.required],
+            amount: ['', Validators.required]
         })
     }
 
     getItems() {
-        this.getItemSub = this.loanDetailsService.getItems()
-        .subscribe(data => {
-            this.items = data;
-            this.filteredUser = data.slice();
-        })
+        // this.getItemSub = this.loanDetailsService.getItems()
+        // .subscribe(data => {
+        //     this.items = data;
+        //     this.filteredUser = data.slice();
+        // })
+        this.items = this.data.payload.loanDetails;
     }
 
     submit() {

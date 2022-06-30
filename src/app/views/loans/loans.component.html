@@ -28,7 +28,7 @@
 
             <ngx-datatable-column name="Balance" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{ row?.balance | currency }}
+                    {{ calculateLoanDetailsAmount(row) | currency:'PHP':true }}
                 </ng-template>
             </ngx-datatable-column>
 
@@ -38,15 +38,15 @@
                 </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Total Amount" [flexGrow]="1">
+            <ngx-datatable-column name="Loan Amount" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{ row?.totalLoan | currency }}
+                    {{ row?.amount | currency }}
                 </ng-template>
             </ngx-datatable-column>
 
             <ngx-datatable-column name="Total Amt w/ Interest" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{ (row?.totalLoan + (row?.totalLoan * row?.interestRate)) | currency  }}
+                    {{ row?.totalLoan | currency  }}
                 </ng-template>
             </ngx-datatable-column>
 
@@ -56,9 +56,9 @@
                 </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Status" [flexGrow]="1">
+            <ngx-datatable-column name="Approved" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.isActive">{{row.isActive ? 'active' : 'inactive'}}</mat-chip>
+                    <mat-chip mat-sm-chip [color]="'primary'" [selected]="row.isApproved">{{row.isApproved ? 'Yes' : 'No'}}</mat-chip>
                 </ng-template>
             </ngx-datatable-column>
 

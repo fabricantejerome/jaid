@@ -16,7 +16,7 @@ import { egretAnimations } from "../../shared/animations/egret-animations";
 export class UsersComponent implements OnInit, OnDestroy {
     public items: any[];
     public filteredUser: any[];
-    public getItemSub: Subscription;
+    // public getItemSub: Subscription;
     public userSub: Subscription;
     constructor(
         private dialog: MatDialog,
@@ -27,7 +27,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        // this.getItems()
         this.userSub = this.usersService.fetch().subscribe((users) => {
             this.items = users;
             this.filteredUser = users;
@@ -40,13 +39,13 @@ export class UsersComponent implements OnInit, OnDestroy {
         }
     }
 
-    getItems() {
-        this.getItemSub = this.usersService.getItems()
-        .subscribe(data => {
-            this.items = data;
-            this.filteredUser = data.slice();
-        })
-    }
+    // getItems() {
+    //     this.getItemSub = this.usersService.getItems()
+    //     .subscribe(data => {
+    //         this.items = data;
+    //         this.filteredUser = data.slice();
+    //     })
+    // }
 
     openPopUp(data: any = {}, isNew?) {
         let title = isNew ? 'Add new member' : 'Update member';
@@ -63,25 +62,25 @@ export class UsersComponent implements OnInit, OnDestroy {
                 return;
             }
 
-            this.loader.open();
+            // this.loader.open();
 
-            if (isNew) {
-                this.usersService.addItem(res)
-                    .subscribe(data => {
-                        this.items = data;
-                        this.loader.close();
-                        this.snack.open('Member Added!', 'OK', { duration: 4000 })
-                        this.filteredUser = data.slice();
-                    })
-            } else {
-                this.usersService.updateItem(data._id, res)
-                    .subscribe(data => {
-                        this.items = data;
-                        this.loader.close();
-                        this.snack.open('Member Updated!', 'OK', { duration: 4000 })
-                        this.filteredUser = data.slice();
-                    })
-            }
+            // if (isNew) {
+            //     this.usersService.addItem(res)
+            //         .subscribe(data => {
+            //             this.items = data;
+            //             this.loader.close();
+            //             this.snack.open('Member Added!', 'OK', { duration: 4000 })
+            //             this.filteredUser = data.slice();
+            //         })
+            // } else {
+            //     this.usersService.updateItem(data._id, res)
+            //         .subscribe(data => {
+            //             this.items = data;
+            //             this.loader.close();
+            //             this.snack.open('Member Updated!', 'OK', { duration: 4000 })
+            //             this.filteredUser = data.slice();
+            //         })
+            // }
         })
     }
 
@@ -96,8 +95,6 @@ export class UsersComponent implements OnInit, OnDestroy {
                         this.loader.close();
                         this.filteredUser = this.filteredUser.filter(element => element.id != row.id)
                         this.snack.open('Member deleted!', 'OK', { duration: 4000 })
-                        // this.filteredUser = data.slice();
-
                     })
                 }
             })

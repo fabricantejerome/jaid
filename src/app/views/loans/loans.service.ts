@@ -1,44 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-// import { UserDB } from '../../shared/inmemory-db/users';
-import { LoanDB } from '../../shared/inmemory-db/loans';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { environment } from "environments/environment";
+import { Loan } from './interfaces/loan';
 
 @Injectable()
 export class LoansService {
-    items: any[];
+    items: Loan[];
     constructor(
         private http: HttpClient
-    ) {
-        let loanDB = new LoanDB();
-        this.items = loanDB.loans;
+    ) {}
+
+    browse(): Observable<any> {
+        return this.http.get<Loan[]>(`${environment.apiURL}/loans/`);
     }
 
-    //******* Implement your APIs ********
-    getItems(): Observable<any> {
-        return  of(this.items.slice())
+    add(loan: Loan): Observable<any> {
+        return this.http.post<Loan>(`${environment.apiURL}/loans/`, loan);
     }
 
-    addItem(item): Observable<any> {
-        item._id = Math.round(Math.random() * 10000000000).toString();
-        this.items.unshift(item);
-        return of(this.items.slice()).pipe(delay(1000));
-    }
-
-    updateItem(id, item) {
-        this.items = this.items.map(i => {
-        if(i._id === id) {
-            return Object.assign({}, i, item);
-        }
-        return i;
-        })
-        return of(this.items.slice()).pipe(delay(1000));
-    }
-
-    removeItem(row) {
-        let i = this.items.indexOf(row);
-        this.items.splice(i, 1);
-        return of(this.items.slice()).pipe(delay(1000));
+    update(loan: Loan): Observable<any> {
+        return this.http.patch<Loan>(`${environment.apiURL}/loans/${loan.id}`, loan);
     }
 }

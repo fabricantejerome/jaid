@@ -8,6 +8,7 @@ import { LoanFormComponent } from './loan-form/loan-form.component';
 import { LoanDetailsComponent } from './loan-details/loan-details.component';
 import { Subscription } from 'rxjs';
 import { egretAnimations } from "../../shared/animations/egret-animations";
+import { Loan } from './interfaces/loan';
 
 @Component({
     selector: 'app-loans',
@@ -16,9 +17,10 @@ import { egretAnimations } from "../../shared/animations/egret-animations";
     animations: egretAnimations
 })
 export class LoansComponent implements OnInit, OnDestroy {
-    public items: any[];
-    public filteredUser: any[];
-    public getItemSub: Subscription;
+    public items: Loan[];
+    public filteredUser: Loan[];
+    public loanSub: Subscription;
+
     constructor(
         private dialog: MatDialog,
         private snack: MatSnackBar,
@@ -28,21 +30,18 @@ export class LoansComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.getItems()
+        this.loanSubscription();
+    }
+
+    loanSubscription() {
+        this.loanSub = this.loansService.browse().subscribe((loans: Loan[]) => {
+            this.items = loans;
+            this.filteredUser = loans;
+        });
     }
 
     ngOnDestroy() {
-        if (this.getItemSub) {
-            this.getItemSub.unsubscribe()
-        }
-    }
-
-    getItems() {
-        this.getItemSub = this.loansService.getItems()
-        .subscribe(data => {
-            this.items = data;
-            this.filteredUser = data.slice();
-        })
+        this.loanSub.unsubscribe();
     }
 
     openPopUp(data: any = {}, isNew?) {
@@ -54,7 +53,7 @@ export class LoansComponent implements OnInit, OnDestroy {
         })
 
         dialogRef.afterClosed()
-        .subscribe(res => {
+        .subscribe((res: Loan) => {
             if(!res) {
                 // If user press cancel
                 return;
@@ -63,40 +62,51 @@ export class LoansComponent implements OnInit, OnDestroy {
             this.loader.open();
 
             if (isNew) {
-                this.loansService.addItem(res)
-                    .subscribe(data => {
-                        this.items = data;
+                const {id, ...rest } = res;
+                this.loansService.add(rest)
+                    .subscribe((data: Loan) => {
+                        this.items.unshift(data);
+                        this.filteredUser = this.items.slice();
                         this.loader.close();
-                        this.snack.open('Member Added!', 'OK', { duration: 4000 })
-                        this.filteredUser = data.slice();
+                        this.snack.open('Loan Added!', 'OK', { duration: 4000 })
                     })
             } else {
-                this.loansService.updateItem(data._id, res)
+                console.log(res);
+                this.loansService.update(res)
                     .subscribe(data => {
-                        this.items = data;
+                        const itemIndex = this.items.findIndex((obj => obj.id == res.id));
+                        this.items[itemIndex] = data
+                        this.filteredUser = this.items.slice();
+
                         this.loader.close();
-                        this.snack.open('Member Updated!', 'OK', { duration: 4000 })
-                        this.filteredUser = data.slice();
+                        this.snack.open('Loan Updated!', 'OK', { duration: 4000 })
                     })
             }
         })
     }
 
-    deleteItem(row) {
-        this.confirmService.confirm({message: `Delete ${row.name}?`})
-            .subscribe(res => {
-                if (res) {
-                this.loader.open();
-                this.loansService.removeItem(row)
-                    .subscribe(data => {
-                        this.items = data;
-                        this.loader.close();
-                        this.snack.open('Member deleted!', 'OK', { duration: 4000 })
-                        this.filteredUser = data.slice();
-                    })
-                }
-            })
+    calculateLoanDetailsAmount(row) {
+        const sumOfPayment: number = row.loanDetails.reduce(( sum, { amount } ) => sum + amount , 0);
+        const balance: number = row.totalLoan - sumOfPayment;
+
+        return balance;
     }
+
+    // deleteItem(row) {
+    //     this.confirmService.confirm({message: `Delete ${row.name}?`})
+    //         .subscribe(res => {
+    //             if (res) {
+    //             this.loader.open();
+    //             this.loansService.removeItem(row)
+    //                 .subscribe(data => {
+    //                     this.items = data;
+    //                     this.loader.close();
+    //                     this.snack.open('Member deleted!', 'OK', { duration: 4000 })
+    //                     this.filteredUser = data.slice();
+    //                 })
+    //             }
+    //         })
+    // }
 
     updateFilter(event) {
         const val = event.target.value.toLowerCase();
