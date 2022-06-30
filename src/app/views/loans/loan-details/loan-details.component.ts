@@ -5,6 +5,7 @@ import { LoanDetailsService } from './loan-details.service';
 import { Subscription } from 'rxjs';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { formatDate } from '@angular/common';
 
 @Component({
     selector: 'app-loan-details',
@@ -57,13 +58,24 @@ export class LoanDetailsComponent implements OnInit, AfterContentChecked, OnDest
     submit() {
         console.log(this.itemForm.value);
         this.loader.open();
-        this.loanDetailsService.addItem(this.itemForm.value)
-        .subscribe(data => {
-            this.items = data;
-            this.loader.close();
-            this.snack.open('Payment Added', 'OK', { duration: 4000 })
-            this.filteredUser = data.slice();
-        });
+        const { loanDetails, ...rest } = this.data.payload;
+
+        const body = {
+            loan: rest,
+            loanDetails: {
+                paymentDate: formatDate(this.itemForm.get('paymentDate').value, "yyyy-MM-dd", "en-US").toString(),
+                amount: this.itemForm.get('amount').value,
+                approvedBy: "Jerome Fabricante"
+            }
+        }
+
+        this.loanDetailsService.add(body)
+            .subscribe(data => {
+                this.items.unshift(data);
+                this.items = this.items.slice();
+                this.loader.close();
+                this.snack.open('Payment Added', 'OK', { duration: 4000 })
+            });
     }
 
     ngOnDestroy(): void {

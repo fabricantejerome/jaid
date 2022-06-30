@@ -6,10 +6,8 @@ import { Loan } from './interfaces/loan';
 
 @Injectable()
 export class LoansService {
-    items: Loan[];
-    constructor(
-        private http: HttpClient
-    ) {}
+    // items: Loan[];
+    constructor(private http: HttpClient) {}
 
     browse(): Observable<any> {
         return this.http.get<Loan[]>(`${environment.apiURL}/loans/`);

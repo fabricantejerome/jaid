@@ -86,8 +86,13 @@ export class LoansComponent implements OnInit, OnDestroy {
     }
 
     calculateLoanDetailsAmount(row) {
-        const sumOfPayment: number = row.loanDetails.reduce(( sum, { amount } ) => sum + amount , 0);
-        const balance: number = row.totalLoan - sumOfPayment;
+        let sumOfPayment: number;
+        let balance: number = row.totalLoan;
+
+        if (row.hasOwnProperty('loanDetails')) {
+            sumOfPayment = row.loanDetails.reduce(( sum, { amount } ) => sum + parseFloat(amount) , 0);
+            balance = row.totalLoan - sumOfPayment;
+        }
 
         return balance;
     }
