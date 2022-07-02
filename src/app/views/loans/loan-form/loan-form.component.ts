@@ -58,7 +58,8 @@ export class LoanFormComponent implements OnInit {
             loanDate: formatDate(this.itemForm.get('loanDate').value, "yyyy-MM-dd", "en-US").toString(),
             mobile: this.itemForm.get('mobile').value,
             totalLoan: this.itemForm.get('totalLoan').value,
-            isApproved: this.itemForm.get('isApproved').value
+            isApproved: this.itemForm.get('isApproved').value,
+            loanDetails: this.data.payload.loanDetails ? this.data.payload.loanDetails : []
         }
 
         this.dialogRef.close(loan);

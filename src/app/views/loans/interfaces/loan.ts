@@ -10,4 +10,5 @@ export interface Loan {
     mobile: string;
     totalLoan: number;
     isApproved: boolean;
+    loanDetails?: []
 }

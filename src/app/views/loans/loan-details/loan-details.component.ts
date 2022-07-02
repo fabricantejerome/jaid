@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs';
 import { AppLoaderService } from 'app/shared/services/app-loader/app-loader.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { formatDate } from '@angular/common';
+import { JwtAuthService } from 'app/shared/services/auth/jwt-auth.service';
+import { egretAnimations } from 'app/shared/animations/egret-animations';
 
 @Component({
     selector: 'app-loan-details',
@@ -13,7 +15,8 @@ import { formatDate } from '@angular/common';
     styleUrls: ['./loan-details.component.scss'],
     providers: [
         LoanDetailsService
-    ]
+    ],
+    animations: egretAnimations
 })
 export class LoanDetailsComponent implements OnInit, AfterContentChecked, OnDestroy {
     public items: any[];
@@ -27,12 +30,13 @@ export class LoanDetailsComponent implements OnInit, AfterContentChecked, OnDest
         private fb: FormBuilder,
         private loanDetailsService: LoanDetailsService,
         private snack: MatSnackBar,
-        private loader: AppLoaderService
+        private loader: AppLoaderService,
+        private jwtAuth: JwtAuthService
     ) { }
 
     ngOnInit(): void {
         this.getItems();
-        this.buildItemForm()
+        this.buildItemForm();
     }
 
     ngAfterContentChecked(): void {
@@ -47,11 +51,6 @@ export class LoanDetailsComponent implements OnInit, AfterContentChecked, OnDest
     }
 
     getItems() {
-        // this.getItemSub = this.loanDetailsService.getItems()
-        // .subscribe(data => {
-        //     this.items = data;
-        //     this.filteredUser = data.slice();
-        // })
         this.items = this.data.payload.loanDetails;
     }
 
@@ -65,7 +64,7 @@ export class LoanDetailsComponent implements OnInit, AfterContentChecked, OnDest
             loanDetails: {
                 paymentDate: formatDate(this.itemForm.get('paymentDate').value, "yyyy-MM-dd", "en-US").toString(),
                 amount: this.itemForm.get('amount').value,
-                approvedBy: "Jerome Fabricante"
+                approvedBy: this.jwtAuth?.user?.displayName
             }
         }
 
@@ -76,6 +75,11 @@ export class LoanDetailsComponent implements OnInit, AfterContentChecked, OnDest
                 this.loader.close();
                 this.snack.open('Payment Added', 'OK', { duration: 4000 })
             });
+    }
+
+    onUpdateLoanTable() {
+        this.data.payload.loanDetails = this.items
+        this.dialogRef.close(this.data.payload);
     }
 
     ngOnDestroy(): void {

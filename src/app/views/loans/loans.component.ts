@@ -143,5 +143,15 @@ export class LoansComponent implements OnInit, OnDestroy {
             disableClose: true,
             data: { title: title, payload: data }
         })
+
+        dialogRef.afterClosed().subscribe((data) => {
+            if(!data) {
+                // If user press cancel
+                return;
+            }
+            const itemIndex = this.items.findIndex((obj => obj.id == data.id));
+            this.items[itemIndex] = data
+            this.filteredUser = this.items.slice();
+        });
     }
 }

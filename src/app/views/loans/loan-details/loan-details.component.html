@@ -23,15 +23,18 @@
 </form>
 
 <div fxLayout="row wrap" fxLayout.lt-sm="column">
-    <div fxFlex="100" class="pr-16">
+    <div fxFlex="100" class="pr-16 loan-details-content">
         <div class="mat-box-shadow">
-            <ngx-datatable class="material fullscreen"
+            <ngx-datatable class="material"
                 [columnMode]="'force'"  
                 [headerHeight]="50"
                 [footerHeight]="50" 
                 [rowHeight]="50"
                 [rows]="items"
+                rowHeight="auto"
+                [limit]="10"
                 [scrollbarH]="true">
+
                 <ngx-datatable-column name="Date" [flexGrow]="1">
                     <ng-template let-row="row" ngx-datatable-cell-template>
                         {{ row?.paymentDate | date }}
@@ -54,6 +57,7 @@
     </div>
 
     <div fxFlex="100" class="mt-16">
+        <button mat-raised-button color="primary" type="button" (click)="onUpdateLoanTable()">Update Loan table</button>
         <span fxFlex></span>
         <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Cancel</button>
     </div>

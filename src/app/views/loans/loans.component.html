@@ -26,6 +26,12 @@
                 </ng-template>
             </ngx-datatable-column>
 
+            <ngx-datatable-column name="Date Released" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.loanDate | date }}
+                </ng-template>
+            </ngx-datatable-column>
+
             <ngx-datatable-column name="Balance" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
                     {{ calculateLoanDetailsAmount(row) | currency:'PHP':true }}
@@ -37,16 +43,22 @@
                     {{ row?.interestRate * 100 + '%' }}
                 </ng-template>
             </ngx-datatable-column>
+
+            <ngx-datatable-column name="Interest Amount" [flexGrow]="1">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row?.totalLoan - row?.amount | currency:'PHP':true }}
+                </ng-template>
+            </ngx-datatable-column>
             
             <ngx-datatable-column name="Loan Amount" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{ row?.amount | currency }}
+                    {{ row?.amount | currency:'PHP':true }}
                 </ng-template>
             </ngx-datatable-column>
 
             <ngx-datatable-column name="Total Amt w/ Interest" [flexGrow]="1">
                 <ng-template let-row="row" ngx-datatable-cell-template>
-                    {{ row?.totalLoan | currency  }}
+                    {{ row?.totalLoan | currency:'PHP':true  }}
                 </ng-template>
             </ngx-datatable-column>
 
