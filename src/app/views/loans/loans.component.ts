@@ -97,6 +97,12 @@ export class LoansComponent implements OnInit, OnDestroy {
         return balance;
     }
 
+    calculateMonthlyPayment(row) {
+        const [numberOfMonths] = row.duration.split(' ');
+
+        return (row.totalLoan / numberOfMonths).toFixed(2);
+    }
+
     // deleteItem(row) {
     //     this.confirmService.confirm({message: `Delete ${row.name}?`})
     //         .subscribe(res => {
