@@ -51,7 +51,7 @@ export class LoanDetailsComponent implements OnInit, AfterContentChecked, OnDest
     }
 
     getItems() {
-        this.items = this.data.payload.loanDetails;
+        this.items = this.data.payload.loanDetails.sort((a, b) => b.id - a.id);
     }
 
     submit() {
